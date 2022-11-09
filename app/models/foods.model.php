@@ -25,7 +25,7 @@ class FoodsModel {
         return $foods;
     }
 
-    public function get($id) {
+    public function getFood($id) {
         $query = $this->db->prepare("SELECT * FROM foods WHERE id = ?");
         $query->execute([$id]);
         $food = $query->fetch(PDO::FETCH_OBJ);
@@ -42,15 +42,21 @@ class FoodsModel {
 
         return $this->db->lastInsertId();
     }
+    
+    public function update($names, $price, $descriptions,$id_category_fk,$id) {
+        $query = $this->db->prepare("UPDATE  foods SET names = ?, price=? ,descriptions=?,id_category_fk=? WHERE id=?");
+        $query->execute([$names, $price, $descriptions, $id_category_fk,$id]);
 
-
+        return $this->db->lastInsertId();
+    }
     /**
      * Elimina una tarea dado su id.
      */
-    function delete($id) {
+    public function delete($id) {
         $query = $this->db->prepare('DELETE FROM foods WHERE id = ?');
         $query->execute([$id]);
     }
+
 
    
 }

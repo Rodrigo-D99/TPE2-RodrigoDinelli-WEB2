@@ -10,6 +10,7 @@ $router->addRoute('foods', 'GET', 'FoodsApiController', 'getFoods');
 $router->addRoute('foods/:ID', 'GET', 'FoodsApiController', 'getFood');
 $router->addRoute('foods/:ID', 'DELETE', 'FoodsApiController', 'deleteFoods');
 $router->addRoute('foods', 'POST', 'foodsApiController', 'insertFoods'); 
+$router->addRoute('foods/:ID', 'PUT', 'foodsApiController', 'updateFoods'); 
 
 // ejecuta la ruta (sea cual sea)
 $router->route($_GET["resource"], $_SERVER['REQUEST_METHOD']);

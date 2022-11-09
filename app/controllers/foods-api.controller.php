@@ -22,14 +22,13 @@ class FoodsApiController {
 
     public function getFoods($params = null) {
         $foods = $this->model->getAll();
-        var_dump($foods);
         $this->view->response($foods);
     }
 
     public function getFood($params = null) {
         // obtengo el id del arreglo de params
         $id = $params[':ID'];
-        $food = $this->model->get($id);
+        $food = $this->model->getFood($id);
 
         // si no existe devuelvo 404
         if ($food)
@@ -41,10 +40,10 @@ class FoodsApiController {
     public function deleteFoods($params = null) {
         $id = $params[':ID'];
 
-        $food = $this->model->get($id);
+        $food = $this->model->getFood($id);
         if ($food) {
             $this->model->delete($id);
-            $this->view->response($food);
+            $this->view->response( "La comida = $id fue eliminada", 200);
         } else 
             $this->view->response("La tarea con el id=$id no existe", 404);
     }
@@ -56,8 +55,24 @@ class FoodsApiController {
             $this->view->response("Complete los datos", 400);
         } else {
             $id = $this->model->insert($food->names, $food->price, $food->descriptions,$food->id_category_fk);
-            $food = $this->model->get($id);
+            $food = $this->model->getFood($id);
             $this->view->response($food, 201);
+        }
+    }
+    
+    public function updateFoods($params = null) {
+        $id = $params[':ID'];
+        $food = $this->model->getFood($id);
+        if ($food){
+            $body=$this->getData();
+            $names=$body->names;
+            $price=$body->price;
+            $descriptions=$body->descriptions;
+            $id_category_fk=$body->id_category_fk;
+            $food = $this->model->update($names,$price,$descriptions,$id_category_fk,$id);
+            $this->view->response("La comida id=$id actualizada con éxito", 200);
+        } else {
+            $this->view->response("La comida id=$id no se a actualizado con éxito", 404);
         }
     }
 
