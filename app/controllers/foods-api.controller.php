@@ -21,8 +21,23 @@ class FoodsApiController {
     }
 
     public function getFoods($params = null) {
-        $foods = $this->model->getAll();
-        $this->view->response($foods);
+        if(isset($_GET['ordenarPor'])){
+            if((isset($_GET['ordenarPor']))&&(isset($_GET['tipoDeOrden']))){
+                $foods = $this->model->getAllFoods($_GET['ordenarPor'],$_GET['tipoDeOrden']);
+                if(!empty($foods)){
+                    $this->view->response($foods);
+                }
+                else{
+                $this->view->response("No se encontraron comidas", 400);
+                }
+            }
+        }
+        else{
+        $foods = $this->model->getAllFoods();
+            if(!empty($foods)){
+                $this->view->response($foods);
+            }
+        }
     }
 
     public function getFood($params = null) {

@@ -11,18 +11,20 @@ class FoodsModel {
     /**
      * Devuelve la lista de tareas completa.
      */
-    public function getAll() {
+    public function getAllFoods($ordenarPor = null, $tipoDeOrden = null) {
         // 1. abro conexión a la DB
         // ya esta abierta por el constructor de la clase
-
+        if((isset($ordenarPor))&&(isset($tipoDeOrden))){
+            $query = $this->db->prepare("SELECT * FROM foods ORDER BY $ordenarPor $tipoDeOrden");
+            $query->execute();
+        }
+        else{
         // 2. ejecuto la sentencia (2 subpasos)
         $query = $this->db->prepare("SELECT * FROM foods");
         $query->execute();
-
+        }
         // 3. obtengo los resultados
-        $foods = $query->fetchAll(PDO::FETCH_OBJ); // devuelve un arreglo de objetos
-        
-        return $foods;
+        return $query->fetchAll(PDO::FETCH_OBJ); // devuelve un arreglo de objetos
     }
 
     public function getFood($id) {
