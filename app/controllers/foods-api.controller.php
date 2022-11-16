@@ -66,7 +66,7 @@ class FoodsApiController {
     public function insertFoods($params = null) {
         $food = $this->getData();
 
-        if (empty($food->names) || empty($food->descriptions) || empty($food->descriptions)|| empty($food->id_category_fk)) {
+        if (empty($food->names) || empty($food->price) || empty($food->descriptions)|| empty($food->id_category_fk)) {
             $this->view->response("Complete los datos", 400);
         } else {
             $id = $this->model->insert($food->names, $food->price, $food->descriptions,$food->id_category_fk);
@@ -87,7 +87,7 @@ class FoodsApiController {
             $food = $this->model->update($names,$price,$descriptions,$id_category_fk,$id);
             $this->view->response("La comida id=$id actualizada con éxito", 200);
         } else {
-            $this->view->response("La comida id=$id no se a actualizado con éxito", 404);
+            $this->view->response("La comida id=$id no se a podido actualizar mire si el ID es correcto", 400);
         }
     }
 
